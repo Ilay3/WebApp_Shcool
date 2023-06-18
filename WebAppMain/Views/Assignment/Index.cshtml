@@ -1,0 +1,118 @@
+﻿@model List<Assignment>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="col">
+    <div class="card shadow">
+        <div class="card-body border-0">
+            <div class="d-flex justify-content-between">
+                    @if (User.IsInRole("Учитель"))
+                    {
+                        <h3 style="display: flex; align-items:center;">
+                            <a asp-action="Create" data-toggle="tooltip" data-placement="top" title="Добавить домашнее задание">
+                                Домашнее задание
+                            </a>
+                        </h3>
+                    }
+                    else
+                    {   
+                        <h3 style="display: flex; align-items:center;">
+                            Домашнее задание
+                        </h3>
+                    }
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">
+                            Название
+                        </th>
+                        <th scope="col">
+                            Описание
+                        </th>
+                        <th scope="col">
+                            Дата
+                        </th>
+                        <th scope="col">
+                            Фаил
+                        </th>
+                        @if (User.IsInRole("Учитель"))
+                        {
+                            <th>Доступ</th>
+                            <th>Удаление</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">@Html.DisplayFor(modelItem => item.Title)</span>
+                                </div>
+                            </th>
+                            <td>
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm" title="@item.Description">
+                                        @Html.Raw(item.Description.Length > 25 ? $"{item.Description.Substring(0, Math.Min(30, item.Description.Length))}..." : item.Description)
+                                    </span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">@item.Date.ToShortDateString()</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="media-body">
+                                    @if (item.File != null)
+                                    {
+                                        <a href="@Url.Action("Download", "Assignment", new { id = item.Id })">Скачать фаил</a>
+                                    }
+                                    else
+                                    {
+                                        <span>Нет прикрепленных фаилов</span>
+                                    }
+                                </div>
+                            </td>
+                            @if (User.IsInRole("Учитель"))
+                            {
+                                <td>
+                                    @if (item.IsPublic)
+                                    {
+                                        <a asp-action="EditIsPublic" asp-route-id="@item.Id" asp-route-isPublic="false">Сделать приватным</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="EditIsPublic" asp-route-id="@item.Id" asp-route-isPublic="true">Сделать публичным</a>
+                                    }
+                                </td>
+                                <td>
+                                    <partial name="Delete" model="@item" title="Удалить" />
+                                </td>
+                            }
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        function showDeleteModal(id) {
+            $('#deleteModal').modal('show');
+            $('#deleteModal input[name="Id"]').val(id);
+        }
+    </script>
+}
+

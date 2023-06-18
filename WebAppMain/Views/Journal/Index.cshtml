@@ -1,0 +1,93 @@
+﻿@model JournalViewModel
+
+
+<div class="col">
+    <div class="card shadow">
+        <div class="card-body border-0 form-inline justify-content-between">
+            <h3><a asp-controller="Journal" asp-action="AddPredmet" asp-route-id="@Model.User.Id" data-toggle="tooltip" data-placement="top" title="Добавить новый предмет">@Model.User.Surname @Model.User.Name Журнал</a></h3>
+            <form asp-controller="Journal" asp-action="Index" asp-route-id="@Model.User.Id" method="get">
+                <div class="col">
+                    <div class="form-group">
+                        <select class="form-control" name="quarter">
+                            <option value="1" selected="@((int)ViewBag.SelectedQuarter == 1)">Первая четверть</option>
+                            <option value="2" selected="@((int)ViewBag.SelectedQuarter == 2)">Вторая четверть</option>
+                            <option value="3" selected="@((int)ViewBag.SelectedQuarter == 3)">Третья четверть</option>
+                            <option value="4" selected="@((int)ViewBag.SelectedQuarter == 4)">Четвертая четверть</option>
+                        </select>
+                        <button class="btn btn-icon-only text-light" type="submit">
+                            <i class="bi bi-funnel"></i>
+                        </button>
+                        <a class="btn btn-icon-only text-light" asp-controller="Journal" asp-action="Index" type="button">
+                            <i class="bi bi-x-lg"></i>
+                        </a>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
+            
+        <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Предмет</th>
+                    <th scope="col">Оценки</th> 
+                    <th scope="col">Средний балл</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var jp in Model.Journal.JournalPredmets)
+                {
+                    <tr>
+                        
+                        <th scope="row">
+                            <div class="media-body">
+                                <span class="mb-0 text-sm">@jp.Predmet.Title_Predmet</span>
+                            </div>
+                        </th>
+                        <td scope="row">
+                            @if (jp.Estimations != null)
+                            {
+                                @foreach (var est in jp.Estimations)
+                                {
+                                    <span class="mb-0 text-sm" title="@est.Date.ToShortDateString()">@est.Value</span>
+                                }
+                            }
+                        </td>
+                        <td scope="row">
+                                @if (Model.AverageGradePerSubject.ContainsKey(jp.Predmet.Title_Predmet))
+                                {
+                                    var avgGrade = Model.AverageGradePerSubject[jp.Predmet.Title_Predmet];
+                                    if (avgGrade != 0.0)
+                                    {
+                                        <span class="badge badge-dot mr-4">
+                                            <i class="@(avgGrade < 2 ? "bg-danger" : avgGrade < 3 ? "bg-danger" : avgGrade < 4 ? "bg-warning" : "bg-success")"></i>
+                                            @avgGrade.ToString("0.0")
+                                        </span>
+                                        
+                                    }
+                                }
+                        </td>
+                        <td class="text-right">
+                            <div class="dropdown position-static">
+                                <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                    <a class="dropdown-item" asp-controller="Journal" asp-action="Estimations" asp-route-journalPredmetId="@jp.Id" asp-route-quarter="@ViewBag.SelectedQuarter">Список оценок</a>
+                                    <a class="dropdown-item" asp-controller="Journal" asp-action="AddEstimation" asp-route-id="@Model.User.Id" asp-route-journalPredmetId="@jp.Id">Добавить оценку</a>
+                                </div>
+                            </div>
+                        </td>
+
+                    </tr>
+        
+                }
+            </tbody>
+        </table>
+        </div>
+</div>
+</div>
+

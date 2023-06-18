@@ -1,0 +1,45 @@
+﻿@model EstimationsViewModel
+
+
+
+<div class="col" style="display: flex; justify-content: center;"> 
+    <div class="card shadow " style="width: 75%">
+        <div class="card-body border-0 form-inline justify-content-between">
+            <h3>@Model.JournalPredmet.Predmet.Title_Predmet | @Model.JournalPredmet.Journal.User.Name @Model.JournalPredmet.Journal.User.Surname</h3>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-items-center table-flush table-sm">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Оценка</th>
+                        <th scope="col">Дата</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var est in Model.Estimations.OrderByDescending(e => e.Date))
+                    {
+                        <tr> 
+                            <th scope="row">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">@est.Value</span>
+                                </div>
+                            </th>
+                            <th scope="row">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">@est.Date.ToShortDateString()</span>
+                                </div>
+                            </th>
+                        
+                            <th scope="row">
+                                <div class="media-body">
+                                    <a href="@Url.Action("EditEstimation", "Journal", new { estimationId = est.Id_Estimation })" class="float-right"><i class=""></i>Редактирование</a>
+                                </div>
+                            </th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

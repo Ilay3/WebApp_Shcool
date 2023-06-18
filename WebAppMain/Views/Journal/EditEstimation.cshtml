@@ -1,0 +1,34 @@
+﻿@model Estimation
+
+@if (TempData.ContainsKey("SuccessMessage"))
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<div class="col">
+    <div>
+        <a href ="@Url.Action("Estimations", "Journal", new { journalPredmetId = Model.JournalPredmetId })">Назад к журналу</a>
+    </div>
+    <div class="card shadow">
+        <div class="card-body">
+
+            <form method="post">
+                <input type="hidden" asp-for="Id_Estimation" />
+                <input type="hidden" asp-for="JournalPredmetId" />
+                <div class="form-group">
+                    <label asp-for="Value" for="Value">Напишите оценку</label>
+                    <input asp-for="Value" class="form-control" id="Value" pattern="[2-5]" required />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Date">Выбирите дату</label>
+                    <input type="date" asp-for="Date" class="form-control" id="date-input" />
+                </div>
+                <div class="form-group">
+                    <input style="background: #5e72e4;" type="submit" value="Сохранить" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

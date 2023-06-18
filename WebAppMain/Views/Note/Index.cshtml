@@ -1,0 +1,73 @@
+﻿@model List<Note>
+
+
+<h1 class="text-center">My Notes</h1>
+
+<div class="col">
+
+    <div class="card shadow">
+        <div class="card-body border-0">
+            <div class="d-flex justify-content-between">
+                <h3 style="display: flex; align-items:center;">
+                    <a asp-action="Create"><i class="bi bi-file-earmark-plus"></i>Добавить</a>
+                </h3>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">
+                            Название
+                        </th>
+                        <th scope="col">
+                            Описание
+                        </th>
+                        <th scope="col">
+                            Дата последнего редактирования
+                        </th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">@Html.DisplayFor(modelItem => item.Title)</span>
+                                </div>
+                            </th>
+                            <td>
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">@Html.Raw(item.Text.Length > 10 ? $"{item.Text.Substring(0, 30)}..." : item.Text)</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">@item.CreatedAt.ToString("g")</span>
+                                </div>
+                            </td>
+                            <td class="text-right">
+                                <div class="dropdown position-static">
+                                    <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="dropdown-item">Подробнее</a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="dropdown-item">Редактировать заметку </a>
+                                       
+                                    </div>
+                                    <partial name="Delete" model="@item" />
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+        

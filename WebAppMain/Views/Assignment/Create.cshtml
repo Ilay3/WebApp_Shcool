@@ -1,0 +1,102 @@
+﻿@model Assignment
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col">
+    <div>
+        <a asp-action="Index">Назад к списку</a>
+    </div>
+    <div class="card shadow">
+        <div class="card-body">
+            <form asp-action="Create" enctype="multipart/form-data" id="noteForm">
+
+                <div class="form-group">
+                    <label asp-for="Title" for="title" class="control-label">Выберите предмет</label>
+                    <select asp-for="Title" class="form-control" id="title">
+                        @foreach (var subject in ViewBag.Subjects)
+                        {
+                            <option value="@subject.Title_Predmet">@subject.Title_Predmet</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Description" for="text" class="control-label">Описание</label>
+                    <textarea asp-for="Description" class="form-control" id="text"></textarea>
+
+                </div>
+
+                <label asp-for="File">Файл домашнего задания</label>
+                <div class="custom-file">
+                    <input type="file"
+                           name="file"
+                           id="file"
+                           asp-for="File"
+                           class="custom-file-input" required>
+
+                    <label class="custom-file-label" for="validatedCustomFile" asp-for="File"
+                           data-browse="Файл">
+                        Выберите файл домашнего задания...
+                    </label>
+
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="IsPublic" class="control-labelead mt-3"> Сделать задание доступным для класса? </label>
+                    <input asp-for="IsPublic" style="width: 30px; height: 30px;" type="checkbox" class="form-control align-items-xl-start" id="isPublic" />
+
+                </div>
+                <input asp-for="ClassId" type="hidden" value="@ViewBag.ClassId" />
+                <div class="form-group">
+                    <input style="background: #5e72e4;" type="submit" value="Создать" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>  
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            $("#noteForm").submit(function (event) {
+                var title = $("#title").val();
+                var text = $("#text").val();
+                var file = $("#file").val();
+                if (!title.trim() || !text.trim() || !file.trim()) {
+                    event.preventDefault();
+                    if (!title.trim()) {
+                        $("#title").addClass("is-invalid");
+                        $("#title").after('<div class="invalid-feedback">Введите название для домашнего задания.</div>');
+                        setTimeout(function () {
+                            $("#title").removeClass("is-invalid");
+                            $(".invalid-feedback").remove();
+                        }, 3000);
+                    }
+                    if (!text.trim()) {
+                        $("#text").addClass("is-invalid");
+                        $("#text").after('<div class="invalid-feedback">Введите описание для домашнего задания.</div>');
+                        setTimeout(function () {
+                            $("#text").removeClass("is-invalid");
+                            $(".invalid-feedback").remove();
+                        }, 3000);
+                    }
+                    if (!file.trim()) {
+                        $("#file").addClass("is-invalid");
+                        $("#file").after('<div class="invalid-feedback">Выбирите файл для домашнего задания.</div>');
+                        setTimeout(function () {
+                            $("#file").removeClass("is-invalid");
+                            $(".invalid-feedback").remove();
+                        }, 3000);
+                    }
+                }
+            });
+        });
+    </script>
+
+}

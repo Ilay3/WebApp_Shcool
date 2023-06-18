@@ -1,0 +1,18 @@
+﻿@model int
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download File</title>
+</head>
+<body>
+    <form asp-controller="Assignment" asp-action="Download" method="post">
+        <input type="hidden" name="id" value="@Model" />
+        <button type="submit">Download</button>
+    </form>
+</body>
+</html>

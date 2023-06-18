@@ -1,0 +1,174 @@
+﻿    @page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+<link rel="stylesheet" href="~/css/style.css" />
+
+
+
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="~/img/undraw_remotely_2j6y.svg" style="height: 100%; filter: contrast(1.5);" alt="Image" class="img-fluid">
+            </div>
+            <div class="col-md-6 contents">
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <div class="mb-4">
+                            <h3>Регистрация</h3>
+                            <p class="mb-4">Зарегистрируйте новый аккаунт, чтобы воспользоваться приложением.</p>
+                        </div>
+                        <form id="noteForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="ml-1">
+                            <div class="form-group mb-2 first">
+                                <label asp-for="Input.Name">Имя</label>
+                                <input asp-for="Input.Name" class="form-control" />
+                                <span asp-validation-for="Input.Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-2 first">
+                                <label asp-for="Input.Surname">Фамилия</label>
+                                <input asp-for="Input.Surname" class="form-control" />
+                                <span asp-validation-for="Input.Surname" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-2 first">
+                                <label asp-for="Input.Patronymic">Отчество</label>
+                                <input asp-for="Input.Patronymic" class="form-control" />
+                                <span asp-validation-for="Input.Patronymic" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-2 first">
+                                <label style="margin-top: -25px;" asp-for="Input.Date_birth">Дата рождения</label>
+                                <input asp-for="Input.Date_birth" type="date" class="form-control" />
+
+                            </div>
+                            <div class="form-group mb-2 first">
+                                <label  asp-for="Input.Email">Email</label>
+                                <input style="margin-top: 10px;" asp-for="Input.Email" class="form-control" />
+                                <span style="font-size: 12px;" asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-2 first">
+                                <label asp-for="Input.Password">Пароль</label>
+                                <input style="margin-top: 10px;" asp-for="Input.Password" class="form-control" />
+                                <span style="font-size: 12px;" asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-2 first">
+                                <label asp-for="Input.ConfirmPassword">Повторите пароль</label>
+                                <input style="margin-top: 10px;" asp-for="Input.ConfirmPassword" class="form-control" />
+                                <span style="font-size: 12px;" asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                            <input type="submit" value="Зарегистрироваться" style="background: #5e72e4;" class="btn btn-block btn-primary">
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $("#noteForm").submit(function (event) {
+                var name = $("#Input_Name").val();
+                var surname = $("#Input_Surname").val();
+                var patronymic = $("#Input_Patronymic").val();
+                var date = $("#Input_Date_birth").val();
+                var email = $("#Input_Email").val();
+                var password = $("#Input_Password").val();
+                var ConfirmPassword = $("#Input_ConfirmPassword").val();
+
+
+                if (!name.trim()) {
+                    event.preventDefault();
+                    $("#Input_Name").addClass("is-invalid");
+                    $("#Input_Name").after('<div class="invalid-feedback">Введите имя.</div>');
+                    setTimeout(function () {
+                        $("#Input_Name").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+                    }, 3000);
+                }
+
+                if (!surname.trim()) {
+                    event.preventDefault();
+                    $("#Input_Surname").addClass("is-invalid");
+                    $("#Input_Surname").after('<div class="invalid-feedback">Введите фамилию.</div>');
+                    setTimeout(function () {
+                        $("#Input_Surname").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+                    }, 3000);
+                }
+
+                if (!patronymic.trim()) {
+                    event.preventDefault();
+                    $("#Input_Patronymic").addClass("is-invalid");
+                    $("#Input_Patronymic").after('<div class="invalid-feedback">Введите отчество.</div>');
+                    setTimeout(function () {
+                        $("#Input_Patronymic").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+                    }, 3000);
+                }
+
+                if (!date.trim()) {
+                    event.preventDefault();
+                    $("#Input_Date_birth").addClass("is-invalid");
+                    $("#Input_Date_birth").after('<div class="invalid-feedback">Введите дату рождения.</div>');
+                    setTimeout(function () {
+                        $("#Input_Date_birth").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+                    }, 3000);
+                }
+
+                if (!email.trim()) {
+                    event.preventDefault();
+                    $("#Input_Email").addClass("is-invalid");
+                    $("#Input_Email").after('<div class="invalid-feedback">Введите адрес электронной почты.</div>');
+                    setTimeout(function () {
+                        $("#Input_Email").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+                    }, 3000);
+                }
+
+                if (!password.trim()) {
+                    event.preventDefault();
+                    $("#Input_Password").addClass("is-invalid");
+                    $("#Input_Password").after('<div class="invalid-feedback">Введите пароль.</div>');
+                    setTimeout(function () {
+                        $("#Input_Password").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+                    }, 3000);
+                }
+
+                if (!ConfirmPassword.trim()) {
+                    event.preventDefault();
+                    $("#Input_ConfirmPassword").addClass("is-invalid");
+                    $("#Input_ConfirmPassword").after('<div class="invalid-feedback">Повторите пароль.</div>');
+                    setTimeout(function () {
+                        $("#Input_ConfirmPassword").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+                    }, 3000);
+                }
+            });
+        });
+
+
+        $(function () {
+            'use strict';
+
+            $('.form-control').on('input', function () {
+                var $field = $(this).closest('.form-group');
+                if (this.value) {
+                    $field.addClass('field--not-empty');
+                } else {
+                    $field.removeClass('field--not-empty');
+                }
+            });
+
+        });
+
+
+    </script>
+}

@@ -1,0 +1,40 @@
+﻿@model AddPredmetViewModel
+
+@if (TempData.ContainsKey("SuccessMessage"))
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<div class="col">
+    <div>
+        <a asp-controller="Journal" asp-action="Index" asp-route-id="@Model.UserId">Назад к журналу</a>
+    </div>
+    <div class="card shadow">
+        <div class="card-body">
+
+            <form asp-controller="Journal" asp-action="AddPredmet" method="post">
+                <input type="hidden" name="UserId" value="@Model.UserId" />
+                <div class="form-group">
+                    <label asp-for="PredmetId" class="control-label" for="title">Выбирите предмет для журнала</label>
+                    <select asp-for="PredmetId" asp-items="@(new SelectList(Model.Predmets, "Id_Predmet", "Title_Predmet"))" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <input style="background: #5e72e4;" type="submit" value="Добавить" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    setTimeout(function () {
+        var alert = document.querySelector(".alert");
+        if (alert != null) {
+            alert.remove();
+        }
+    }, 5000); // 5000 миллисекунд = 5 секунд
+</script>

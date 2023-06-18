@@ -1,0 +1,68 @@
+﻿@model Note
+
+<div class="col">
+    <div>
+        <a asp-action="Index">Назад к списку</a>
+    </div>
+    <div class="card shadow">
+        <div class="card-body">
+            <form asp-action="Create" method="post" id="noteForm">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" id="title" asp-for="Title" placeholder="Введите название">
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="text">Text</label>
+                    <textarea class="form-control" id="text" asp-for="Text" placeholder="Введите текст "></textarea>
+                    <span asp-validation-for="Text" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input style="background: #5e72e4;" type="submit" value="Сохранить" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#noteForm").submit(function (event) {
+                var title = $("#title").val();
+                var text = $("#text").val();
+                if (!title.trim() || !text.trim()) {
+                    event.preventDefault();
+                    if (!title.trim()) {
+                        $("#title").addClass("is-invalid");
+                        $("#title").after('<div class="invalid-feedback">Please enter a title.</div>');
+                        setTimeout(function () {
+                            $("#title").removeClass("is-invalid");
+                            $(".invalid-feedback").remove();
+                        }, 3000);
+                    }
+                    if (!text.trim()) {
+                        $("#text").addClass("is-invalid");
+                        $("#text").after('<div class="invalid-feedback">Please enter some text.</div>');
+                        setTimeout(function () {
+                            $("#text").removeClass("is-invalid");
+                            $(".invalid-feedback").remove();
+                        }, 3000);
+                    }
+                }
+            });
+        });
+    </script>
+}
+
+
+<script>
+    $(document).ready(function () {
+        var textArea = document.getElementById("text");
+        textArea.addEventListener('input', function () {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        }, false);
+    });
+</script>

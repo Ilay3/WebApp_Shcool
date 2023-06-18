@@ -1,0 +1,49 @@
+﻿@model WebAppMain.Models.Class
+
+
+<div class="col">
+    <div>
+        <a asp-action="Index">Назад к списку</a>
+    </div>
+    <div class="card shadow">
+        <div class="card-body">
+
+            <form asp-action="Create" method="post" id="noteForm">
+                <div class="form-group">
+                    <label asp-for="Title_Class" class="control-label" for="title">Название класса</label>
+                    <input type="text" asp-for="Title_Class" class="form-control" id="title" placeholder="Напишите название класса" />
+                </div>
+                <div class="form-group">
+                    <input style="background: #5e72e4;" type="submit" value="Создать" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+
+            $("#noteForm").submit(function (event) {
+                var title = $("#title").val();
+                if (!title.trim() ){
+                    event.preventDefault();
+                    if (!title.trim()) {
+                        $("#title").addClass("is-invalid");
+                        $("#title").after('<div class="invalid-feedback">Напишите название класса.</div>');
+                        setTimeout(function () {
+                            $("#title").removeClass("is-invalid");
+                            $(".invalid-feedback").remove();
+                        }, 3000);
+                    }
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,33 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+    {
+        Layout = (string)parentLayout;
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+
+<div>    
+    <div class="container rounded mt-2 mb-5">
+        <h3>
+            Изменение настроек учетной записи
+        </h3>
+            <div class="">
+                <div class="py-3">
+                    <partial name="_ManageNav" />
+                </div>
+            </div>
+            <div class="md-8 ">
+                <div class="p-3 py-1 border-right bg-light shadow">
+                    @RenderBody()
+                </div>
+            </div>
+          
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

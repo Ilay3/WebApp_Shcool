@@ -1,0 +1,37 @@
+﻿@model Assignment
+
+<form asp-action="Delete" method="post">
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Подтверждение удаления задания</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p style="word-wrap: break-word">Вы действительно хотите удалить задание @Model.Title?</p>
+                    <p style="word-wrap: break-word"><strong>Title:</strong> @Model.Title</p>
+                    <p style="word-wrap: break-word"><strong>Description:</strong> @Model.Description</p>
+                    <p><strong>Date:</strong> @Model.Date.ToShortDateString()</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+
+                    <button type="submit" class="btn btn-danger">
+                        Удалить
+                    </button>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" asp-for="Id" />
+    <button type="button" class="btn btn-sm btn-icon-only text-light" data-toggle="modal" data-target="#deleteModal">
+        <i class="bi bi-trash3"></i>
+    </button>
+</form>
+
+

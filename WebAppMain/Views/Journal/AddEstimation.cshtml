@@ -1,0 +1,65 @@
+﻿
+@model AddEstimationViewModel
+
+@if (TempData.ContainsKey("SuccessMessage"))
+{
+    <div id="successMessage" class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            var successMessage = document.getElementById('successMessage');
+            if (successMessage) {
+                successMessage.style.display = 'none';
+            }
+        }, 3000);
+    </script>
+}
+
+@if (TempData.ContainsKey("ErrorMessage"))
+{
+    <div id="errorMessage" class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+
+    <script>
+        setTimeout(function () {
+            var errorMessage = document.getElementById('errorMessage');
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+            }
+        }, 3000);
+    </script>
+}
+
+<div class="col">
+    <div>
+        <a href="@Context.Request.Headers["Referer"].ToString()">Назад к журналу</a>
+    </div>
+    <div class="card shadow">
+        <div class="card-body">
+
+            <form asp-controller="Journal" asp-action="AddEstimation" method="post" id="noteForm">
+                <input type="hidden" name="JournalPredmetId" value="@Model.JournalPredmetId" />
+                <div class="form-group">
+                    <label asp-for="Value" for="Value">Напишите оценку</label>
+                    <input asp-for="Value" class="form-control" id="Value" pattern="[2-5]" required />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Date">Выбирите дату</label>
+                    <input type="date" asp-for="Date" class="form-control" id="date-input" />
+                </div>
+                <div class="form-group">
+                    <input style="background: #5e72e4;" type="submit" value="Добавить" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var today = new Date().toISOString().substr(0, 10);
+    document.getElementById('date-input').value = today;
+</script>
+

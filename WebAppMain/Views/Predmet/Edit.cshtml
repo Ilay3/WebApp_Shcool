@@ -1,0 +1,75 @@
+﻿@model WebAppMain.Models.Predmet
+
+<div class="col">
+    <div>
+        <a asp-action="Index">Назад к списку</a>
+    </div>
+    <div class="card shadow">
+        <div class="card-body">
+
+            <form asp-action="Edit" id="noteForm">
+                <input type="hidden" asp-for="Id_Predmet" />
+                <div class="form-group">
+                    <label asp-for="Title_Predmet" class="control-label" for="title">Название предмета</label>
+                    <input type="text" asp-for="Title_Predmet" class="form-control" id="title" placeholder="Напишите название предмета" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description_Predmet" class="control-label" for="description">Описание предмета</label>
+                    <textarea rows="7" cols="33" asp-for="Description_Predmet" class="form-control" id="description" placeholder="Напишите описание предмета"></textarea>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Study_period" class="control-label" for="period">Период изучения</label>
+                    <input asp-for="Study_period" class="form-control" id="period" placeholder="Напишите период изучения предмета (с _ по _ класс)" />
+                </div>
+                <div class="form-group">
+                    <input style="background: #5e72e4;" type="submit" value="Сохранить" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+
+            $("#noteForm").submit(function (event) {
+                var title = $("#title").val();
+                var description = $("#description").val();
+                var period = $("#period").val();
+                if (!title.trim() || !description.trim() || !period.trim()) {
+                    event.preventDefault();
+                    if (!title.trim()) {
+                        $("#title").addClass("is-invalid");
+                        $("#title").after('<div class="invalid-feedback">Напишите название предмета.</div>');
+                        setTimeout(function () {
+                            $("#title").removeClass("is-invalid");
+                            $(".invalid-feedback").remove();
+                        }, 3000);
+                    }
+                    if (!description.trim()) {
+                        $("#description").addClass("is-invalid");
+                        $("#description").after('<div class="invalid-feedback">Напишите описание предмета.</div>');
+                        setTimeout(function () {
+                            $("#description").removeClass("is-invalid");
+                            $(".invalid-feedback").remove();
+                        }, 3000);
+                    }
+                    if (!period.trim()) {
+                        $("#period").addClass("is-invalid");
+                        $("#period").after('<div class="invalid-feedback">Напишите период изучения предмета (с _ по _ класс).</div>');
+                        setTimeout(function () {
+                            $("#period").removeClass("is-invalid");
+                            $(".invalid-feedback").remove();
+                        }, 3000);
+                    }
+                }
+            });
+        });
+    </script>
+}

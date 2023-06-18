@@ -1,0 +1,27 @@
+﻿@model WebAppMain.Models.Class
+
+
+<a asp-action="Index">Вернуться назад</a>
+
+<div class="card shadow">
+    <div class="card-body">
+        <h3>Вы действительно хотите удалить данный класс ?</h3>
+        <div>
+            <dl class="row">
+                <dt class="pl-3">
+                    Название класса:
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Title_Class)
+                </dd>
+                
+            </dl>
+            <form asp-action="Delete" method="post" id="deleteForm">
+                <input type="hidden" asp-for="Id_Class" />
+                <div class="form-group">
+                    <input style="background: #5e72e4;" type="submit" value="Удалить" class="btn btn-danger" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

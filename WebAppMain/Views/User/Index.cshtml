@@ -1,0 +1,189 @@
+﻿@using WebAppMain.Controllers
+@using WebAppMain.Models
+@model UserListViewModel
+@{
+    ViewData["Title"] = "User List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (TempData.ContainsKey("SuccessMessage"))
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData.ContainsKey("ErrorMessage"))
+{
+    <div class="alert alert-danger" role="alert">
+        @TempData["ErrorMessage"]
+    </div>
+}
+<div class="col">
+    <div class="card shadow">
+        <div class="card-body border-0 form-inline justify-content-between">
+            <h3>Мои ученики</h3>
+            <form asp-controller="User" asp-action="Index" method="get">
+                <div class="col">
+                    <div class="form-group">
+                        <div class="input-group mr-2">
+                            <input class="form-control py-2 border-right-0 border" type="search" id="example-search-input" name="searchString" placeholder="Поиск по ФИО">
+                            <span class="input-group-append">
+                                <div class="input-group-text bg-transparent"><i class="bi bi-search"></i></div>
+                            </span>
+                        </div>
+                        <button class="btn btn-icon-only text-light" type="submit">
+                            <i class="bi bi-funnel"></i>
+                        </button>
+                        <a class="btn btn-icon-only text-light" asp-controller="User" asp-action="Index" type="button">
+                            <i class="bi bi-x-lg"></i>
+                        </a>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Имя</th>
+                        <th scope="col">Фамилия</th>
+                        <th scope="col">Отчество</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Роль</th>
+                        <th scope="col">Класс</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <th scope="row">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">@Html.DisplayFor(modelItem => user.Name)</span>
+                                </div>
+                            </th>
+                            <th scope="row">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">@Html.DisplayFor(modelItem => user.Surname)</span>
+                                </div>
+                            </th>
+                            <th scope="row">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">@Html.DisplayFor(modelItem => user.Patronymic)</span>
+                                </div>
+                            </th>
+                            <td>
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">@Html.DisplayFor(modelItem => user.Email)</span>
+                                </div>
+                            </td>
+                            <td>
+                                @foreach (var role in Model.UserManager.GetRolesAsync(user).Result)
+                                {
+                                    <span class="badge badge-dot mr-4">
+                                        <i class="bg-warning"></i> @role
+                                    </span>
+                                }
+                            </td>
+                            <td>
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">@user.Class?.Title_Class</span>
+                                </div>
+                            </td>
+                            <td class="text-right">
+
+                                <div class="dropdown position-static">
+                                    <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                        <a class="dropdown-item" asp-controller="User" asp-action="Edit" asp-route-id="@user.Id">Изменить</a>
+                                        <a class="dropdown-item" href="@Url.Action("Index", "Journal", new { id = user.Id })">Журнал</a>
+                                    </div>
+                                    <partial name="Delete" model="@user" />
+                                </div>
+                            </td>
+                        </tr>
+
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="mt-2">
+    <nav>
+        <ul class="pagination justify-content-center">
+            @if (Model.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="/User/Index?page=@(Model.CurrentPage - 1)&amp;searchString=@Model.SearchString&amp;className=@Model.ClassName"><i class="bi bi-arrow-left-short"></i></a>
+                </li>
+            }
+            <li class="page-item">
+                <a class="page-link" href="/User/Index?page=1&amp;searchString=@Model.SearchString&amp;className=@Model.ClassName">1</a>
+            </li>
+            @if (Model.CurrentPage > 4)
+            {
+                <li class="page-item">
+                    <span class="page-link">...</span>
+                </li>
+            }
+            @for (int i = Model.CurrentPage - 2; i <= Model.CurrentPage + 2; i++)
+            {
+                if (i > 1 && i < Model.TotalPages)
+                {
+                    if (i == Model.CurrentPage)
+                    {
+                        <li class="page-item active">
+                            <span class="page-link">@i</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="/User/Index?page=@i&amp;searchString=@Model.SearchString&amp;className=@Model.ClassName">@i</a>
+                        </li>
+                    }
+                }
+            }
+            @if (Model.CurrentPage < Model.TotalPages - 3)
+            {
+                <li class="page-item">
+                    <span class="page-link">...</span>
+                </li>
+            }
+            @if (Model.TotalPages > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="/User/Index?page=@Model.TotalPages&amp;searchString=@Model.SearchString&amp;className=@Model.ClassName">@Model.TotalPages</a>
+                </li>
+            }
+            @if (Model.CurrentPage < Model.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="/User/Index?page=@(Model.CurrentPage + 1)&amp;searchString=@Model.SearchString&amp;className=@Model.ClassName"><i class="bi bi-arrow-right-short"></i></a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
+
+
+<script>
+    setTimeout(function () {
+        var alert = document.querySelector(".alert");
+        if (alert != null) {
+            alert.remove();
+        }
+    }, 5000); // 5000 миллисекунд = 5 секунд
+</script>

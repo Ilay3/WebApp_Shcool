@@ -1,0 +1,36 @@
+﻿@model WebAppMain.Models.Predmet
+
+<a asp-action="Index">Вернуться назад</a>
+
+    <div class="card shadow">
+        <div class="card-body">
+
+            <dl class="row">
+                <dt class=" pl-3">
+                    Название предмета:
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Title_Predmet)
+                </dd>
+                <dt class=" pl-3">
+                    Описание предмета:
+                </dt>
+                <dd class="col-sm-9" style="word-wrap: break-word;">
+                    @Html.DisplayFor(model => model.Description_Predmet)
+                </dd>
+                <dt class=" pl-3">
+                    Период изучения:
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Study_period)
+                </dd>
+            </dl>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.Id_Predmet">Перейти на страницу редактирования</a>
+
+        </div>
+        </div>
+    </div>
+
+
+

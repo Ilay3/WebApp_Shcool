@@ -1,0 +1,107 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<link rel="stylesheet" href="~/css/style.css" />
+
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="~/img/undraw_remotely_2j6y.svg" style="height: 100%; filter: contrast(1.5);" alt="Image" class="img-fluid">
+            </div>
+            <div class="col-md-6 contents">
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <div class="mb-4">
+                            <h3>Авторизация</h3>
+                            <p class="mb-4">Войдите в свой аккаунт.</p>
+                        </div>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <form id="noteForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="ml-1">
+                            <div class="form-group mb-2 first">
+                                <label asp-for="Input.Email">Email</label>
+                                <input id="Input_Email" style="margin-top: 10px;" asp-for="Input.Email" class="form-control" />
+                            </div>
+                            <div class="form-group mb-2 first">
+                                <label asp-for="Input.Password">Пароль</label>
+                                <input id="Input_Password" style="margin-top: 10px;" asp-for="Input.Password" class="form-control" />
+                            </div>
+                            <div class="">
+                                <div class="checkbox">
+                                    <label asp-for="Input.RememberMe">
+                                        <input asp-for="Input.RememberMe" />
+                                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-lg-start mb-4">
+                                <div class="g-recaptcha" data-sitekey="6Ld83FslAAAAAE85TzJiOeKwgFu0C2Yjxz9mJM3y"></div>
+                            </div>
+                            <input type="submit" value="Авторизироваться" style="background: #5e72e4;" class="btn btn-block btn-primary">
+                            <div class="">
+                                <p>
+                                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Зарегистрируйтесь как новый пользователь</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#noteForm").submit(function (event) {
+                var email = $("#Input_Email").val();
+                var password = $("#Input_Password").val();
+
+                if (!email.trim()) {
+                    event.preventDefault();
+                    $("#Input_Email").addClass("is-invalid");
+                    $("#Input_Email").after('<div class="invalid-feedback">Введите адрес электронной почты.</div>');
+                    setTimeout(function () {
+                        $("#Input_Email").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+                    }, 3000);
+                }
+
+                if (!password.trim()) {
+                    event.preventDefault();
+                    $("#Input_Password").addClass("is-invalid");
+                    $("#Input_Password").after('<div class="invalid-feedback">Введите пароль.</div>');
+                    setTimeout(function () {
+                        $("#Input_Password").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+                    }, 3000);
+                }
+            });
+        });
+
+        window.onload = function () {
+            document.getElementById('Input_Email').value = '';
+        };
+
+        $(function () {
+            'use strict';
+
+            $('.form-control').on('input', function () {
+                var $field = $(this).closest('.form-group');
+                if (this.value) {
+                    $field.addClass('field--not-empty');
+                } else {
+                    $field.removeClass('field--not-empty');
+                }
+            });
+        });
+    </script>
+}

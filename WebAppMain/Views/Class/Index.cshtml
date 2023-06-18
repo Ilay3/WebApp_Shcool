@@ -1,0 +1,145 @@
+﻿@model PaginatedList<WebAppMain.Models.Class>
+
+
+<div class="col">
+    <div class="card shadow">
+        <div class="card-body border-0">
+            <div class="d-flex justify-content-between">
+                <h3 style="display: flex; align-items:center;">
+                    <a asp-action="Create" data-toggle="tooltip" data-placement="top" title="Создать новый класс">
+                        Список классов
+                    </a>
+                </h3>
+                <form asp-controller="Class" asp-action="Index" method="get" class="">
+                    <div class="input-group">
+                        <input class="form-control py-2 border-right-0 border" type="search" id="example-search-input" name="searchString" value="@ViewData["CurrentFilter"]" placeholder="Поиск по номеру класса">
+                        <span class="input-group-append">
+                            <div class="input-group-text bg-transparent"><i class="bi bi-search"></i></div>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">
+                            <a asp-action="Index" data-toggle="tooltip" data-placement="top" title="Сортировка по названию А-Я" asp-route-sortOrder="@ViewData["TitleSortParm"]">Название</a>
+                        </th>
+                        <th scope="col">Количество учеников</th>
+                        <th scope="col">Учитель</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row">
+                                <div class="media-body">
+                                    <span class="mb-0 text-sm">@Html.DisplayFor(modelItem => item.Title_Class)</span>
+                                </div>
+                            </th>
+                            <td scope="row">
+                                <div class="media-body" style="font-weight: 500;">
+                                    <span class="mb-0 text-sm">Количество учеников: @ViewData[$"StudentCount_{item.Id_Class}"]</span>
+                                </div>
+                            </td>
+                            <td scope="row">
+                                <div class="media-body" style="font-weight: 500;">
+                                    <span class="mb-0 text-sm">Учитель: @ViewData[$"TeacherName_{item.Id_Class}"]</span>
+                                    
+                                </div>
+                            </td>
+
+
+                            <td class="text-right">
+                                <div class="dropdown position-static">
+                                    <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                        <a class="dropdown-item" asp-action="Edit" asp-route-id="@item.Id_Class">Изменить</a>
+                                        <a class="dropdown-item" asp-action="Details" asp-route-id="@item.Id_Class">Подробности</a>
+                                        <a class="dropdown-item" asp-action="Delete" asp-route-id="@item.Id_Class">Удалить</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+    
+
+<div class="mt-2">
+    <nav>
+        <ul class="pagination justify-content-center">
+            @if (Model.HasPreviousPage && Model.PageIndex > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { sortOrder = ViewData["CurrentSort"], currentFilter = ViewData["CurrentFilter"], searchString = ViewData["CurrentFilter"], pageNumber = Model.PageIndex - 1 })"><i class="bi bi-arrow-left-short"></i></a>
+                </li>
+            }
+            <li class="page-item">
+                <a class="page-link" href="@Url.Action("Index", new { sortOrder = ViewData["CurrentSort"], currentFilter = ViewData["CurrentFilter"], searchString = ViewData["CurrentFilter"], pageNumber = 1 })">1</a>
+            </li>
+            @if (Model.PageIndex > 4)
+            {
+                <li class="page-item">
+                    <span class="page-link">...</span>
+                </li>
+            }
+            @for (int i = Model.PageIndex - 2; i <= Model.PageIndex + 2; i++)
+            {
+                if (i > 1 && i < Model.TotalPages)
+                {
+                    if (i == Model.PageIndex)
+                    {
+                        <li class="page-item active">
+                            <span class="page-link">@i</span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { sortOrder = ViewData["CurrentSort"], currentFilter = ViewData["CurrentFilter"], searchString = ViewData["CurrentFilter"], pageNumber = i })">@i</a>
+                        </li>
+                    }
+                }
+            }
+            @if (Model.PageIndex < Model.TotalPages - 3)
+            {
+                <li class="page-item">
+                    <span class="page-link">...</span>
+                </li>
+            }
+            @if (Model.TotalPages > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { sortOrder = ViewData["CurrentSort"], currentFilter = ViewData["CurrentFilter"], searchString = ViewData["CurrentFilter"], pageNumber = Model.TotalPages })">@Model.TotalPages</a>
+                </li>
+            }
+            @if (Model.HasNextPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { sortOrder = ViewData["CurrentSort"], currentFilter = ViewData["CurrentFilter"], searchString = ViewData["CurrentFilter"], pageNumber = Model.PageIndex + 1 })"><i class="bi bi-arrow-right-short"></i></a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>

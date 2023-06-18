@@ -1,0 +1,35 @@
+﻿@model List<ManageUserRolesViewModel>
+@{
+    ViewData["Title"] = "Управление";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col">
+    <div>
+        <a asp-action="Index">Назад к списку</a>
+    </div>
+    <div class="card shadow">
+        <div class="card-body">
+            <form method="post">
+                        <h2>Управление ролями пользователей</h2>
+                        Добавление/удаление ролей для пользователя - @ViewBag.UserName.
+        
+                    <div class="card-body">
+                        @for (int i = 0; i < Model.Count; i++)
+                        {
+                            <div class="custom-control custom-checkbox">
+                                <input type="hidden" class="custom-control-input" asp-for="@Model[i].RoleId" />
+                                <input type="hidden" class="custom-control-input" asp-for="@Model[i].RoleName" />
+                                <input asp-for="@Model[i].Selected" class="custom-control-input" class="form-check-input" />
+                                <label class="custom-control-label" class="custom-control-input" asp-for="@Model[i].Selected">
+                                    @Model[i].RoleName
+                                </label>
+                            </div>
+                        }
+                        <div asp-validation-summary="All" class="text-danger"></div>
+
+                        <input type="submit" value="Обновление" style="background: #5e72e4; width:auto" class="btn btn-success"/>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>

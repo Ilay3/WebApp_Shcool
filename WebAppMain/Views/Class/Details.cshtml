@@ -1,0 +1,87 @@
+﻿@model List<ApplicationUser>
+
+
+
+@if (Model.Any())
+{
+    <div class="col">
+        <div>
+            <a asp-action="Index">Назад к списку</a>
+        </div>
+        <div class="card shadow">
+            <div class="card-body border-0">
+                <div class="d-flex justify-content-between">
+                    <h3 style="display: flex; align-items:center;">
+                            Список учеников в  @Html.DisplayFor(model => model.FirstOrDefault().Class.Title_Class)
+                    </h3>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Имя</th>
+                            <th scope="col">Фамилия</th>
+                            <th scope="col">Отчество</th>
+                            <th scope="col">Дата рождения</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <th scope="row">
+                                    @item.Name
+                                </th>
+                                <th scope="row">
+                                    @item.Surname
+                                </th>
+                                <th scope="row">
+                                    @item.Patronymic
+                                </th>
+                                <th scope="row">
+                                    @item.Date_birth.ToString("dd/MM/yyyy")
+                                </th>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="col">
+        <div>
+            <a asp-action="Index">Назад к списку</a>
+        </div>
+        <div class="card shadow">
+            <div class="card-body border-0">
+                <div class="d-flex justify-content-between">
+                    <h3 style="display: flex; align-items:center;">
+                        Список учеников пуст
+                    </h3>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table align-items-center table-flush">
+                    <thead>
+                        <tr>
+                            <th scope="col">Имя</th>
+                            <th scope="col">Фамилия</th>
+                            <th scope="col">Отчество</th>
+                            <th scope="col">Дата родления</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
